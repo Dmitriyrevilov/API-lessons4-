@@ -3,6 +3,17 @@ from dotenv import load_dotenv
 import os
 
 
+
+from download_apod import download_apod_images 
+from download_epic import download_epic_images
+from fetch_spacex_images import fetch_spacex_images
+from coolprogram import download_image
+
+
+
+
+
+
 load_dotenv()
 
 
