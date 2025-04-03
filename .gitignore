@@ -134,6 +134,7 @@ celerybeat.pid
 # Environments
 .env
 .venv38
+venv38
 venv38/
 .venv
 env/
