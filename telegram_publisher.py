@@ -32,9 +32,7 @@ def post_images_to_telegram(image_dir, interval_hours):
         ]
         if not images:
             print(f"В директории '{image_dir}' не найдено изображений.")
-            time.sleep(
-                interval_hours * 3600
-            )  # Ждем интервал, даже если нет изображений
+            time.sleep(interval_hours * 3600)
             continue
         random.shuffle(images)
         for image in images:

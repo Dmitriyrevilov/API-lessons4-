@@ -58,9 +58,3 @@ if __name__ == "__main__":
     parser.add_argument("end_date", help="Конечная дата (YYYY-MM-DD)")
     args = parser.parse_args()
     download_apod_images(args.start_date, args.end_date)
-
-# Как исправить ошибку:
-
-# Вам нужно указать начальную и конечную даты при запуске скрипта. Например:
-
-# python download_apod.py 2023-12-01 2023-12-31

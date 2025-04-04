@@ -14,9 +14,3 @@ def download_image(image_url, save_path):
         print(f"Ошибка при скачивании изображения: {e}")
     except Exception as e:
         print(f"Произошла ошибка при сохранении изображения: {e}")
-
-
-# if __name__ == "__main__":
-#     image_url1 = "https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg"
-#     save_path1 = "images_hubble/hubble.jpeg"
-#     download_image(image_url1, save_path1)
