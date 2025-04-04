@@ -10,7 +10,6 @@ from coolprogram import download_image
 def download_apod_images(start_date, end_date):
     load_dotenv()
     api_nasa = os.getenv("API_NASA")
-
     try:
         os.makedirs("apod_images", exist_ok=True)
         url_apod = "https://api.nasa.gov/planetary/apod"
