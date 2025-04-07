@@ -12,5 +12,5 @@ def download_image(image_url, save_path):
         print(f"Изображение успешно скачано и сохранено в: {save_path}")
     except requests.exceptions.RequestException as e:
         print(f"Ошибка при скачивании изображения: {e}")
-    except Exception as e:
+    except OSError as e:
         print(f"Произошла ошибка при сохранении изображения: {e}")

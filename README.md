@@ -53,9 +53,9 @@ pip install -r requirements.txt
 Вам нужно настроить некоторые переменные окружения перед запуском бота. Создайте файл .env и добавьте переменные с вашим ключом API NASA, токеном бота Telegram и ID канала Telegram:
 
 ```
-API_NASA=ваш_API_NASA
-API_TG_BOT=ваш_API_TG_BOT
-TELEGRAM_CHANNEL_ID=ваш_TELEGRAM_CHANNEL_ID
+nasa_api_key=ваш_NASA_API_KEY
+telegram_bot_token=TELEGRAM_BOT_TOKEN
+telegram_channel_id=ваш_TELEGRAM_CHANNEL_ID
 ```
 
 **Как получить ключ API NASA:**
