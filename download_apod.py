@@ -9,10 +9,10 @@ from urllib.error import URLError
 from requests.exceptions import RequestException
 
 
-def get_apod_data(start_date, end_date, nasa_api_key):
+def get_apod_data(start_date, end_date, NASA_API_KEY):
     url_apod = "https://api.nasa.gov/planetary/apod"
     params = {
-        "api_key": nasa_api_key,
+        "api_key": NASA_API_KEY,
         "start_date": start_date,
         "end_date": end_date,
     }
@@ -21,33 +21,44 @@ def get_apod_data(start_date, end_date, nasa_api_key):
     return response.json()
 
 
-def download_apod_images(start_date, end_date, api_nasa):
-    os.makedirs("apod_images", exist_ok=True)
-    apod = get_apod_data(start_date, end_date, api_nasa)
-    if isinstance(apod, dict):
-        apod = [apod]
+def download_apod_images(start_date, end_date, NASA_API_KEY, directory):
+    os.makedirs(directory, exist_ok=True)
+    try:
+        apod_entries = download_apod_images(start_date, end_date, NASA_API_KEY)
+    except RequestException as e:
+        print(f"Ошибка при получении данных APOD: {e}")
+        return []
+
+    if isinstance(apod_entries, dict):
+        apod_entries = [apod_entries]
+
     downloaded_images = []
-    for apod in apod:
-        if "url" in apod:
-            image_url = apod["url"]
-            parsed_url = urlparse(image_url)
-            filename = basename(parsed_url.path)
-            filepath = os.path.join("apod_images", filename)
-            success = download_image(image_url, filepath)
-            if success:
-                downloaded_images.append(image_url)
+    for apod_entry in apod_entries:
+        if apod_entry.get("media_type") == "image":
+            image_url = apod_entry.get("url") or apod_entry.get("hdurl")
+            if image_url:
+                parsed_url = urlparse(image_url)
+                filename = basename(parsed_url.path)
+                filepath = os.path.join(directory, filename)
+                success = download_image(image_url, filepath)
+                if success:
+                    downloaded_images.append(image_url)
+                else:
+                    print(f"Не удалось скачать изображение {image_url}")
             else:
-                print(f"Не удалось скачать изображение {image_url}")
+                print(
+                    f"Пропущено: Нет URL или HDURL для APOD от {apod_entry.get('date', 'неизвестной даты')}"
+                )
         else:
             print(
-                f"Пропущено: Нет URL для APOD от {apod.get('date', 'неизвестной даты')}"
+                f"Пропущено: APOD от {apod_entry.get('date', 'неизвестной даты')} имеет тип {apod_entry.get('media_type')}, требуется 'image'."
             )
     return downloaded_images
 
 
 def main():
-    nasa_api_key = os.getenv("NASA_API_KEY")
-    if not nasa_api_key:
+    NASA_API_KEY = os.getenv("NASA_API_KEY")
+    if not NASA_API_KEY:
         print("Ошибка: Не найден NASA_API_KEY в переменных окружения.")
         return
     parser = argparse.ArgumentParser(
@@ -55,10 +66,15 @@ def main():
     )
     parser.add_argument("start_date", help="Начальная дата (YYYY-MM-DD)")
     parser.add_argument("end_date", help="Конечная дата (YYYY-MM-DD)")
+    parser.add_argument(
+        "--directory",
+        default=os.getenv("APOD_DIRECTORY", "apod_images"),
+        help="Директория для сохранения изображений (по умолчанию: apod_images, или переменная окружения APOD_DIRECTORY)",
+    )
     args = parser.parse_args()
     try:
         downloaded_images = download_apod_images(
-            args.start_date, args.end_date, nasa_api_key
+            args.start_date, args.end_date, NASA_API_KEY
         )
         if downloaded_images:
             print(f"Успешно скачаны изображения: {downloaded_images}")
