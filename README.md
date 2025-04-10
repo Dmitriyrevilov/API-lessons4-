@@ -53,9 +53,9 @@ pip install -r requirements.txt
 Вам нужно настроить некоторые переменные окружения перед запуском бота. Создайте файл .env и добавьте переменные с вашим ключом API NASA, токеном бота Telegram и ID канала Telegram:
 
 ```
-NASA_API_KEY=ваш_NASA_API_KEY
-TELEGRAM_BOT_TOKEN=TELEGRAM_BOT_TOKEN
-TELEGRAM_CHANNEL_ID=ваш_TELEGRAM_CHANNEL_ID
+nasa_api_key=ваш_NASA_API_KEY
+telegram_bot_token=TELEGRAM_BOT_TOKEN
+telegram_channel_id=ваш_TELEGRAM_CHANNEL_ID
 ```
 
 **Как получить ключ API NASA:**
@@ -83,10 +83,12 @@ TELEGRAM_CHANNEL_ID=ваш_TELEGRAM_CHANNEL_ID
 
 Этот скрипт получает изображения APOD от NASA с помощью API и сохраняет его в локальной директории `apod_images/`.
 
+Скачать изображения за вчерашний и сегодняшний день (используются значения по умолчанию)
+
 Также можно установить через переменную окружения `APOD_DIRECTORY`.  Если задана и переменная окружения, и аргумент командной строки, аргумент командной строки имеет приоритет.
 
 ```bash
-python download_apod.py  YYYY-MM-DD
+python download_apod.py
 ```
 
 ```bash
@@ -102,7 +104,7 @@ _Вы можете указать дату изображения (YYYY - год
 Также можно установить через переменную окружения `EPIC_DIRECTORY`. Если задана и переменная окружения, и аргумент командной строки, аргумент командной строки имеет приоритет.
 
 ```bash
-python download_epic.py --count 10
+python download_epic.py --num_images 10
 ```
 
 ```bash

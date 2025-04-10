@@ -24,9 +24,9 @@ def send_image(bot, chat_id, image_path):
 
 
 def post_images_to_telegram(
-    image_dir, interval_hours, TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL_ID
+    image_dir, interval_hours, telegram_bot_token, telegram_channel_id
 ):
-    bot = telegram.Bot(token=TELEGRAM_BOT_TOKEN)
+    bot = telegram.Bot(token=telegram_bot_token)
     images = load_images_from_directory(image_dir)
 
     if not images:
@@ -35,7 +35,7 @@ def post_images_to_telegram(
         return
     random.shuffle(images)
     for image in images:
-        send_image(bot, TELEGRAM_CHANNEL_ID, image)
+        send_image(bot, telegram_channel_id, image)
         time.sleep(interval_hours * 3600)
 
 
@@ -52,18 +52,18 @@ def main():
         help="Интервал между публикациями в часах (по умолчанию: 4).",
     )
     args = parser.parse_args()
-    TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-    if not TELEGRAM_BOT_TOKEN:
+    telegram_bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
+    if not telegram_bot_token:
         print("Ошибка: Не найден TELEGRAM_BOT_TOKEN в переменных окружения.")
         return
-    TELEGRAM_CHANNEL_ID = os.getenv("TELEGRAM_CHANNEL_ID")
-    if not TELEGRAM_CHANNEL_ID:
+    telegram_channel_id = os.getenv("TELEGRAM_CHANNEL_ID")
+    if not telegram_channel_id:
         print("Ошибка: Не найден TELEGRAM_CHANNEL_ID в переменных окружения.")
         return
     try:
-        TELEGRAM_CHANNEL_ID = int(TELEGRAM_CHANNEL_ID)
+        telegram_channel_id = int(telegram_channel_id)
         post_images_to_telegram(
-            args.image_dir, args.interval, TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL_ID
+            args.image_dir, args.interval, telegram_bot_token, telegram_channel_id
         )
     except ValueError:
         print("Ошибка: TELEGRAM_CHANNEL_ID должен быть целым числом.")
