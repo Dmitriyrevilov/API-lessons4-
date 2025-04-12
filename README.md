@@ -92,7 +92,7 @@ python download_apod.py
 ```
 
 ```bash
-python download_apod.py 2023-01-01 2023-01-05 --directory /путь/к/моим/apod/изображениям
+python download_apod.py --start_date 2023-01-01 --end_date 2023-01-05 --directory /путь/к/моим/apod/изображениям
 ```
 
 _Вы можете указать дату изображения (YYYY - год, MM - месяц, DD - день)._

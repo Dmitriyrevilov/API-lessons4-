@@ -18,6 +18,8 @@ def get_flight_id(flight_id_arg=None, default_flight_id=None):
     if not flight_id:
         url_latest = "https://api.spacexdata.com/v5/launches/latest"
         launch = requests.get(url_latest).json()
+        launch.reise_for_status()
+        launch.raise_for_status()
         flight_id = launch["id"]
     return flight_id
 
