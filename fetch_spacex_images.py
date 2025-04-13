@@ -16,11 +16,8 @@ def get_spacex_info(flight_id):
 def get_flight_id(flight_id_arg=None, default_flight_id=None):
     flight_id = flight_id_arg or default_flight_id
     if not flight_id:
-        url_latest = "https://api.spacexdata.com/v5/launches/latest"
-        launch = requests.get(url_latest).json()
-        launch.reise_for_status()
-        launch.raise_for_status()
-        flight_id = launch["id"]
+        last_launch = get_spacex_info("latest")
+        flight_id = last_launch["id"]
     return flight_id
 
 
@@ -44,19 +41,19 @@ def fetch_spacex_images(flight_id):
 
 
 def main():
-    spacex_flight_id = os.getenv("SPACEX_FLIGHT_ID")
-    spacex_images_dir = os.getenv("SPACEX_IMAGES_DIR", "images_spacex")
+    SPACEX_FLIGHT_ID = os.getenv("SPACEX_FLIGHT_ID")
+    SPACEX_IMAGES_DIR = os.getenv("SPACEX_IMAGES_DIR", "images_spacex")
     parser = argparse.ArgumentParser(
         description="Скачивает изображения с запуска SpaceX. Если ID не указан, скачивает последний запуск."
     )
     parser.add_argument("--flight_id", help="ID запуска SpaceX.")
     parser.add_argument(
         "--directory",
-        default=spacex_images_dir,
-        help=f"Директория для сохранения изображений (по умолчанию: {spacex_images_dir}, или переменная окружения SPACEX_IMAGES_DIR)",
+        default=SPACEX_IMAGES_DIR,
+        help=f"Директория для сохранения изображений (по умолчанию: {SPACEX_IMAGES_DIR}, или переменная окружения SPACEX_IMAGES_DIR)",
     )
     args = parser.parse_args()
-    default_flight_id = spacex_flight_id
+    default_flight_id = SPACEX_FLIGHT_ID
     try:
         flight_id = get_flight_id(args.flight_id, default_flight_id)
     except (RequestException, KeyError, TypeError, URLError) as e:
