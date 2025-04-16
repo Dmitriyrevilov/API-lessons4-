@@ -53,9 +53,9 @@ pip install -r requirements.txt
 Вам нужно настроить некоторые переменные окружения перед запуском бота. Создайте файл .env и добавьте переменные с вашим ключом API NASA, токеном бота Telegram и ID канала Telegram:
 
 ```
-nasa_api_key=ваш_NASA_API_KEY
-telegram_bot_token=TELEGRAM_BOT_TOKEN
-telegram_channel_id=ваш_TELEGRAM_CHANNEL_ID
+NASA_API_KEY=ваш_NASA_API_KEY
+TELEGRAM_BOT_TOKEN=TELEGRAM_BOT_TOKEN
+TELEGRAM_CHANNEL_ID=ваш_TELEGRAM_CHANNEL_ID
 ```
 
 **Как получить ключ API NASA:**
@@ -92,7 +92,7 @@ python download_apod.py
 ```
 
 ```bash
-python download_apod.py 2023-01-01 2023-01-05 --directory /путь/к/моим/apod/изображениям
+python download_apod.py --start_date 2023-01-01 --end_date 2023-01-05 --directory /путь/к/моим/apod/изображениям
 ```
 
 _Вы можете указать дату изображения (YYYY - год, MM - месяц, DD - день)._
