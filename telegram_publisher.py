@@ -24,9 +24,9 @@ def send_image(bot, chat_id, image_path):
 
 
 def post_images_to_telegram(
-    image_dir, interval_hours, telegram_bot_token, telegram_channel_id
+    image_dir, interval_hours, TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL_ID
 ):
-    bot = telegram.Bot(token=telegram_bot_token)
+    bot = telegram.Bot(token=TELEGRAM_BOT_TOKEN)
     images = load_images_from_directory(image_dir)
 
     if not images:
@@ -35,7 +35,7 @@ def post_images_to_telegram(
         return
     random.shuffle(images)
     for image in images:
-        send_image(bot, telegram_channel_id, image)
+        send_image(bot, TELEGRAM_CHANNEL_ID, image)
         time.sleep(interval_hours * 3600)
 
 
