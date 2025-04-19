@@ -72,9 +72,10 @@ def main():
         default=today.strftime("%Y-%m-%d"),
         help="Конечная дата (YYYY-MM-DD)",
     )
+    apod_images_dir = os.getenv("APOD_DIRECTORY", "apod_images")
     parser.add_argument(
         "--directory",
-        default=os.getenv("apod_directory", "apod_images"),
+        default=apod_images_dir,
         help="Директория для сохранения изображений (по умолчанию: apod_images, или переменная окружения APOD_DIRECTORY)",
     )
     args = parser.parse_args()

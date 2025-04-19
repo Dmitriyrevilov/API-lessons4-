@@ -79,7 +79,7 @@ TELEGRAM_CHANNEL_ID=ваш_TELEGRAM_CHANNEL_ID
 
 Проект содержит несколько скриптов, которые вам нужно будет запустить:
 
-**download_apod.py:**
+**fetch_apod_images.py:**
 
 Этот скрипт получает изображения APOD от NASA с помощью API и сохраняет его в локальной директории `apod_images/`.
 
@@ -88,27 +88,27 @@ TELEGRAM_CHANNEL_ID=ваш_TELEGRAM_CHANNEL_ID
 Также можно установить через переменную окружения `APOD_DIRECTORY`.  Если задана и переменная окружения, и аргумент командной строки, аргумент командной строки имеет приоритет.
 
 ```bash
-python download_apod.py
+python fetch_apod_images.py
 ```
 
 ```bash
-python download_apod.py --start_date 2023-01-01 --end_date 2023-01-05 --directory /путь/к/моим/apod/изображениям
+python fetch_apod_images.py --start_date 2023-01-01 --end_date 2023-01-05 --directory /путь/к/моим/apod/изображениям
 ```
 
 _Вы можете указать дату изображения (YYYY - год, MM - месяц, DD - день)._
 
-**download_epic.py:**
+**fetch_epic_images.py:**
 
 Этот скрипт получает изображения EPIC от NASA с помощью API и сохраняет их в локальной директории `epic_images/`.
 
 Также можно установить через переменную окружения `EPIC_DIRECTORY`. Если задана и переменная окружения, и аргумент командной строки, аргумент командной строки имеет приоритет.
 
 ```bash
-python download_epic.py --num_images 10
+python fetch_epic_images.py --num_images 10
 ```
 
 ```bash
-python download_epic.py --num_images 10 --directory /путь/к/моим/epic/изображениям
+python fetch_epic_images.py --num_images 10 --directory /путь/к/моим/epic/изображениям
 ```
 
 _Вы можете указать количество фотографий (вместо 15 - любое число от одного). Если не указано, по умолчанию загружается 5 фотографий._

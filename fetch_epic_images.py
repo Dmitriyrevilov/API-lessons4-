@@ -56,6 +56,7 @@ def main():
         print("Ошибка: Не найден NASA_API_KEY в переменных окружения.")
         return
     parser = argparse.ArgumentParser(description="Скачивает EPIC изображения от NASA.")
+    epic_images_dir = os.getenv("EPIC_DIRECTORY", "epic_images")
     parser.add_argument(
         "--num_images",
         type=int,
@@ -64,7 +65,7 @@ def main():
     )
     parser.add_argument(
         "--directory",
-        default=os.getenv("EPIC_DIRECTORY", "epic_images"),
+        default=epic_images_dir,
         help="Директория для сохранения изображений (по умолчанию: epic_images, или переменная окружения EPIC_DIRECTORY)",
     )
     args = parser.parse_args()

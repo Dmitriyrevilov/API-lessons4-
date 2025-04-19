@@ -47,6 +47,7 @@ def main():
         description="Скачивает изображения с запуска SpaceX. Если ID не указан, скачивает последний запуск."
     )
     parser.add_argument("--flight_id", help="ID запуска SpaceX.")
+    
     parser.add_argument(
         "--directory",
         default=SPACEX_IMAGES_DIR,
