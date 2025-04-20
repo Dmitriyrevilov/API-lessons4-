@@ -1,5 +1,6 @@
 import requests
 import os
+from dotenv import load_dotenv
 import argparse
 from coolprogram import download_image
 from urllib.error import URLError
@@ -21,13 +22,13 @@ def get_flight_id(flight_id_arg=None, default_flight_id=None):
     return flight_id
 
 
-def fetch_spacex_images(flight_id):
+def fetch_spacex_images(flight_id, directory):
     launch_info = get_spacex_info(flight_id)
     urls_image = launch_info["links"]["flickr"]["original"]
     if not urls_image:
         print(f"Нет изображений для запуска с ID: {flight_id}")
         return []
-    os.makedirs("images_spacex", exist_ok=True)
+    os.makedirs(directory, exist_ok=True)
     downloaded_images = []
     for image_number, image_url in enumerate(urls_image):
         filename = f"spacex_{image_number}.jpeg"
@@ -41,20 +42,21 @@ def fetch_spacex_images(flight_id):
 
 
 def main():
-    SPACEX_FLIGHT_ID = os.getenv("SPACEX_FLIGHT_ID")
-    SPACEX_IMAGES_DIR = os.getenv("SPACEX_IMAGES_DIR", "images_spacex")
+    load_dotenv()
+    spacex_flight_id = os.getenv("SPACEX_FLIGHT_ID")
+    spacex_images_dir = os.getenv("SPACEX_IMAGES_DIR", "images_spacex")
     parser = argparse.ArgumentParser(
         description="Скачивает изображения с запуска SpaceX. Если ID не указан, скачивает последний запуск."
     )
     parser.add_argument("--flight_id", help="ID запуска SpaceX.")
-    
+
     parser.add_argument(
         "--directory",
-        default=SPACEX_IMAGES_DIR,
-        help=f"Директория для сохранения изображений (по умолчанию: {SPACEX_IMAGES_DIR}, или переменная окружения SPACEX_IMAGES_DIR)",
+        default=spacex_images_dir,
+        help=f"Директория для сохранения изображений (по умолчанию: {spacex_images_dir}, или переменная окружения SPACEX_IMAGES_DIR)",
     )
     args = parser.parse_args()
-    default_flight_id = SPACEX_FLIGHT_ID
+    default_flight_id = spacex_flight_id
     try:
         flight_id = get_flight_id(args.flight_id, default_flight_id)
     except (RequestException, KeyError, TypeError, URLError) as e:
@@ -64,7 +66,7 @@ def main():
         print("Не удалось получить flight_id. Завершение работы.")
         return
     try:
-        downloaded_images = fetch_spacex_images(flight_id)
+        downloaded_images = fetch_spacex_images(flight_id, args.directory)
     except OSError as e:
         print(f"Ошибка при скачивании изображений: {e}")
         return

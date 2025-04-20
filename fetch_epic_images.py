@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 import argparse
 from datetime import datetime
 import requests
@@ -6,9 +7,9 @@ from urllib.error import URLError
 from requests.exceptions import RequestException
 
 
-def get_epic(NASA_API_KEY):
+def get_epic(nasa_api_key):
     url = "https://api.nasa.gov/EPIC/api/natural/images"
-    params = {"api_key": NASA_API_KEY}
+    params = {"api_key": nasa_api_key}
     response = requests.get(url, params=params)
     response.raise_for_status()
     return response.json()
@@ -22,13 +23,13 @@ def download_image_with_params(url, filepath, params=None):
     return True
 
 
-def download_epic_images(num_images=5, NASA_API_KEY=None):
+def download_epic_images(num_images=5, nasa_api_key=None):
     directory = "epic_images"
-    if not NASA_API_KEY:
+    if not nasa_api_key:
         print("Ошибка: Не передан API ключ NASA.")
         return None
     os.makedirs("epic_images", exist_ok=True)
-    epic_entries = get_epic(NASA_API_KEY)
+    epic_entries = get_epic(nasa_api_key)
     downloaded_images = []
     for image_info in epic_entries[:num_images]:
         image_name = image_info["image"]
@@ -41,7 +42,7 @@ def download_epic_images(num_images=5, NASA_API_KEY=None):
         )
         image_url = f"https://api.nasa.gov/EPIC/archive/natural/{year}/{month}/{day}/png/{image_name}.png"
         filepath = os.path.join(directory, f"{image_name}.png")
-        params = {"api_key": NASA_API_KEY}
+        params = {"api_key": nasa_api_key}
         success = download_image_with_params(image_url, filepath, params)
         if success:
             downloaded_images.append(image_url)
@@ -51,8 +52,9 @@ def download_epic_images(num_images=5, NASA_API_KEY=None):
 
 
 def main():
-    NASA_API_KEY = os.getenv("NASA_API_KEY")
-    if not NASA_API_KEY:
+    load_dotenv()
+    nasa_api_key = os.getenv("NASA_API_KEY")
+    if not nasa_api_key:
         print("Ошибка: Не найден NASA_API_KEY в переменных окружения.")
         return
     parser = argparse.ArgumentParser(description="Скачивает EPIC изображения от NASA.")
@@ -70,7 +72,7 @@ def main():
     )
     args = parser.parse_args()
     try:
-        downloaded_images = download_epic_images(args.num_images, NASA_API_KEY)
+        downloaded_images = download_epic_images(args.num_images, nasa_api_key)
         if downloaded_images:
             print(f"Успешно скачаны изображения: {downloaded_images}")
         else:

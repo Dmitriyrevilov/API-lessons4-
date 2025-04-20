@@ -1,6 +1,6 @@
 import os
 import argparse
-
+from dotenv import load_dotenv
 from urllib.parse import urlparse
 from os.path import basename
 import requests
@@ -10,10 +10,10 @@ from urllib.error import URLError
 from requests.exceptions import RequestException
 
 
-def get_apod_info(start_date, end_date, NASA_API_KEY):
+def get_apod_info(start_date, end_date, nasa_api_key):
     url_apod = "https://api.nasa.gov/planetary/apod"
     params = {
-        "api_key": NASA_API_KEY,
+        "api_key": nasa_api_key,
         "start_date": start_date,
         "end_date": end_date,
     }
@@ -22,9 +22,9 @@ def get_apod_info(start_date, end_date, NASA_API_KEY):
     return response.json()
 
 
-def download_apod_images(start_date, end_date, NASA_API_KEY, directory):
+def download_apod_images(start_date, end_date, nasa_api_key, directory):
     os.makedirs(directory, exist_ok=True)
-    apod_entries = get_apod_info(start_date, end_date, NASA_API_KEY)
+    apod_entries = get_apod_info(start_date, end_date, nasa_api_key)
     if isinstance(apod_entries, dict):
         apod_entries = [apod_entries]
     downloaded_images = []
@@ -53,8 +53,9 @@ def download_apod_images(start_date, end_date, NASA_API_KEY, directory):
 
 
 def main():
-    NASA_API_KEY = os.getenv("NASA_API_KEY")
-    if not NASA_API_KEY:
+    load_dotenv()
+    nasa_api_key = os.getenv("NASA_API_KEY")
+    if not nasa_api_key:
         print("Ошибка: Не найден NASA_API_KEY в переменных окружения.")
         return
     parser = argparse.ArgumentParser(
@@ -81,7 +82,7 @@ def main():
     args = parser.parse_args()
     try:
         downloaded_images = download_apod_images(
-            args.start_date, args.end_date, NASA_API_KEY, args.directory
+            args.start_date, args.end_date, nasa_api_key, args.directory
         )
         if downloaded_images:
             print(f"Успешно скачаны изображения: {downloaded_images}")
